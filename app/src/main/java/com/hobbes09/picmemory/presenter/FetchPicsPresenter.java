@@ -1,7 +1,10 @@
 package com.hobbes09.picmemory.presenter;
 
+import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
+import com.hobbes09.picmemory.PicMemoryApplication;
 import com.hobbes09.picmemory.model.pojos.PicFeed;
 import com.hobbes09.picmemory.presenter.interfaces.IFetchFinishedPresenter;
 import com.hobbes09.picmemory.presenter.interfaces.IFetchPicsPresenter;
@@ -19,8 +22,8 @@ public class FetchPicsPresenter implements IFetchPicsPresenter, IFetchFinishedPr
     private PicService mPicService;
     private IPlayView iPlayView;
 
-    public FetchPicsPresenter(IPlayView iPlayView) {
-        this.mPicService = new PicService(this);
+    public FetchPicsPresenter(PicMemoryApplication mApplication, IPlayView iPlayView) {
+        this.mPicService = new PicService(mApplication, this);
         this.iPlayView = iPlayView;
     }
 

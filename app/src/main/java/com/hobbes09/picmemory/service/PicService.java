@@ -1,13 +1,17 @@
 package com.hobbes09.picmemory.service;
 
+import android.app.Application;
+import android.content.Context;
+
+import com.hobbes09.picmemory.PicMemoryApplication;
 import com.hobbes09.picmemory.model.pojos.PicFeed;
 import com.hobbes09.picmemory.presenter.interfaces.IFetchFinishedPresenter;
 import com.hobbes09.picmemory.service.interfaces.Getters;
-import com.hobbes09.picmemory.utils.GlobalConfig;
+
+import javax.inject.Inject;
 
 import retrofit.Call;
 import retrofit.Callback;
-import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
 
@@ -19,8 +23,8 @@ public class PicService implements IPicService {
 
     private PicFeed mPicFeed;
 
-    // TODO : To be injected
-    private  Retrofit retrofit;
+    @Inject
+    public Retrofit retrofit;
 
     private IFetchFinishedPresenter mIFetchFinishedPresenter;
 
@@ -43,12 +47,9 @@ public class PicService implements IPicService {
                 }
             };
 
-    public PicService (IFetchFinishedPresenter mIFetchFinishedPresenter){
+    public PicService (PicMemoryApplication mApplication, IFetchFinishedPresenter mIFetchFinishedPresenter){
         this.mIFetchFinishedPresenter = mIFetchFinishedPresenter;
-        this.retrofit = new Retrofit.Builder()
-                .baseUrl(GlobalConfig.BASE_API)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        mApplication.getNetComponent().inject(this);
     }
 
     @Override
