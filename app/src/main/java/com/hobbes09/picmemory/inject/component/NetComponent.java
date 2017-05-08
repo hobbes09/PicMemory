@@ -2,8 +2,7 @@ package com.hobbes09.picmemory.inject.component;
 
 import com.hobbes09.picmemory.inject.module.AppModule;
 import com.hobbes09.picmemory.inject.module.NetModule;
-import com.hobbes09.picmemory.service.PicService;
-import com.hobbes09.picmemory.view.fragment.PlayFragment;
+import com.hobbes09.picmemory.api_service.PicService;
 
 import javax.inject.Singleton;
 

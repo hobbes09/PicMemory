@@ -1,12 +1,9 @@
-package com.hobbes09.picmemory.service;
-
-import android.app.Application;
-import android.content.Context;
+package com.hobbes09.picmemory.api_service;
 
 import com.hobbes09.picmemory.PicMemoryApplication;
 import com.hobbes09.picmemory.model.pojos.PicFeed;
 import com.hobbes09.picmemory.presenter.interfaces.IFetchFinishedPresenter;
-import com.hobbes09.picmemory.service.interfaces.Getters;
+import com.hobbes09.picmemory.api_service.interfaces.Getters;
 
 import javax.inject.Inject;
 
@@ -19,7 +16,7 @@ import retrofit.Retrofit;
  * Created by hobbes09 on 08/05/17.
  */
 
-public class PicService implements IPicService {
+public class PicService implements IPicApiService {
 
     private PicFeed mPicFeed;
 

@@ -1,14 +1,10 @@
 package com.hobbes09.picmemory.presenter;
 
-import android.app.Application;
-import android.content.Context;
-import android.util.Log;
-
 import com.hobbes09.picmemory.PicMemoryApplication;
 import com.hobbes09.picmemory.model.pojos.PicFeed;
 import com.hobbes09.picmemory.presenter.interfaces.IFetchFinishedPresenter;
 import com.hobbes09.picmemory.presenter.interfaces.IFetchPicsPresenter;
-import com.hobbes09.picmemory.service.PicService;
+import com.hobbes09.picmemory.api_service.PicService;
 import com.hobbes09.picmemory.view.IPlayView;
 
 import java.util.stream.Collectors;
@@ -19,11 +15,11 @@ import java.util.stream.Collectors;
 
 public class FetchPicsPresenter implements IFetchPicsPresenter, IFetchFinishedPresenter {
 
-    private PicService mPicService;
+    private PicService mPicApiService;
     private IPlayView iPlayView;
 
     public FetchPicsPresenter(PicMemoryApplication mApplication, IPlayView iPlayView) {
-        this.mPicService = new PicService(mApplication, this);
+        this.mPicApiService = new PicService(mApplication, this);
         this.iPlayView = iPlayView;
     }
 
@@ -32,7 +28,7 @@ public class FetchPicsPresenter implements IFetchPicsPresenter, IFetchFinishedPr
         // Perform validation and call api service
         // TODO : Maybe we can inject a validator for this
         if (page > 0 && page < 100){
-            this.mPicService.fetchPicsAsync(page);
+            this.mPicApiService.fetchPicsAsync(page);
         } else {
             onError();
         }

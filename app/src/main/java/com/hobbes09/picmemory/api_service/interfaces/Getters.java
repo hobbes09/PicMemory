@@ -1,4 +1,4 @@
-package com.hobbes09.picmemory.service.interfaces;
+package com.hobbes09.picmemory.api_service.interfaces;
 
 import com.hobbes09.picmemory.model.pojos.PicFeed;
 
