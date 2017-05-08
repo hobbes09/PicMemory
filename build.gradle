@@ -7,6 +7,9 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
 
+        // For dagger 2
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+
         // For retrolambda
         classpath 'me.tatarka:gradle-retrolambda:3.5.0'
 

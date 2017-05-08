@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 25
@@ -28,6 +29,7 @@ android {
 
 def androidSupportVersion = '25.3.0'
 def retrofitVersion = '2.0.0-beta1'
+def daggerVersion = '2.9'
 
 
 dependencies {
@@ -38,14 +40,17 @@ dependencies {
 
     compile "com.android.support:appcompat-v7:$androidSupportVersion"
     compile "com.android.support:recyclerview-v7:$androidSupportVersion"
-    compile 'com.jakewharton:butterknife:8.5.1'
     compile 'com.android.support:support-v4:25.3.0'
     compile 'com.google.code.gson:gson:2.3'
     compile "com.squareup.retrofit:retrofit:$retrofitVersion"
     compile "com.squareup.retrofit:converter-gson:$retrofitVersion"
+    compile "com.google.dagger:dagger:${daggerVersion}"
+    apt "com.google.dagger:dagger-compiler:${daggerVersion}"
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'com.squareup.okio:okio:1.7.0'
 
     testCompile 'junit:junit:4.12'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 }
 
 apply plugin: 'me.tatarka.retrolambda' // make sure to apply last!
