@@ -23,13 +23,15 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private List<String> mData;
     private LayoutInflater mInflater;
     private TileItemClickListener mClickListener;
+    Boolean[] matrixDisplayedFlags;
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, Fragment fragment, List<String> data) {
+    public MyRecyclerViewAdapter(Context context, Fragment fragment, List<String> data, Boolean[] matrixDisplayedFlags) {
         this.mInflater = LayoutInflater.from(context);
         this.mClickListener = (TileItemClickListener)fragment;
         this.mContext = context;
         this.mData = data;
+        this.matrixDisplayedFlags = matrixDisplayedFlags;
     }
 
     @Override
@@ -43,9 +45,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         mData = data;
     }
 
+    public void setMatrixDisplayedFlags(Boolean[] matrixDisplayedFlags) {
+        this.matrixDisplayedFlags = matrixDisplayedFlags;
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (mContext != null){
+        if (mContext != null && matrixDisplayedFlags[position]){
             Picasso.with(mContext)
                     .load(mData.get(position))
                     .fit()

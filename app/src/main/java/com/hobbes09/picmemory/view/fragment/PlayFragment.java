@@ -22,6 +22,7 @@ import com.hobbes09.picmemory.utils.NotifyCountDownTimer;
 import com.hobbes09.picmemory.view.IPlayView;
 import com.hobbes09.picmemory.view.adapter.MyRecyclerViewAdapter;
 import com.hobbes09.picmemory.view.base.BaseFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -57,6 +58,7 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
     public PicMemoryApplication mApplication;
     Context mContext;
     int currentPage = 1;
+    int indexQuestionImage = 0;
     List<String> currentUrls;
     Boolean[] matrixDisplayedFlags = new Boolean[NUM_COLS * NUM_COLS];
     String currentCard;
@@ -115,7 +117,7 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
     // Method executed only when mContext != null
     public void initializeUi(View view){
         // TODO : To be replaced with butterknife injection.
-        // Not working for some unknown annotation conflict.
+        // Not working for some unknown annotation conflict with dagger 2
 
         Arrays.fill(matrixDisplayedFlags, true);
 
@@ -128,8 +130,10 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
 
         rvGrid = (RecyclerView) view.findViewById(R.id.rvGrid);
         rvGrid.setLayoutManager(new GridLayoutManager(mContext, GlobalConfig.NUM_COLS));
-        mMyRecyclerViewAdapter = new MyRecyclerViewAdapter(mContext, this, new ArrayList<String>());
+        mMyRecyclerViewAdapter = new MyRecyclerViewAdapter(mContext, this, new ArrayList<String>(), matrixDisplayedFlags);
         rvGrid.setAdapter(mMyRecyclerViewAdapter);
+
+        ivQuestion.setVisibility(View.INVISIBLE);
 
         btnNew.setOnClickListener(view1 -> refreshPlay());
     }
@@ -148,10 +152,7 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
     @Override
     public void refeshAdapter(List<String> urls) {
         currentUrls = urls;
-        if (mMyRecyclerViewAdapter != null){
-            mMyRecyclerViewAdapter.setData(currentUrls);
-            mMyRecyclerViewAdapter.notifyDataSetChanged();
-        }
+        updateAdapterState(currentUrls, matrixDisplayedFlags);
 
         if (tvCountDown != null && mNotifyCountDownTimer != null){
             tvCountDown.setText("Starting in 15 sec ...");
@@ -165,6 +166,45 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
     }
 
     @Override
+    public void updateAdapterState(List<String> data, Boolean[] matrixDisplayedFlags) {
+        if (mMyRecyclerViewAdapter != null){
+            mMyRecyclerViewAdapter.setData(currentUrls);
+            mMyRecyclerViewAdapter.setMatrixDisplayedFlags(matrixDisplayedFlags);
+            mMyRecyclerViewAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void setQuestionImage(int index) {
+        if (ivQuestion != null && mContext != null){
+            ivQuestion.setVisibility(View.VISIBLE);
+            ivQuestion.setTag(index);
+
+            Picasso.with(mContext)
+                    .load(currentUrls.get(index))
+                    .fit()
+                    .centerInside()
+                    .placeholder(R.drawable.picasso_placeholder)
+                    .error(R.drawable.picasso_placeholder)
+                    .into(ivQuestion);
+        }
+    }
+
+    @Override
+    public int getAndUpdateQuestionIndex() {
+        return indexQuestionImage++;
+    }
+
+    @Override
+    public boolean isSubmissionCorrect(int index) {
+        if (ivQuestion != null){
+            if ((int)ivQuestion.getTag() == index)
+                return true;
+        }
+        return false;
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
@@ -172,7 +212,13 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
 
     @Override
     public void onTileItemClick(View view, int position) {
-        Toast.makeText(mContext, "Clicked on tile :" + position + "  ---  with tag : " + view.getTag(), Toast.LENGTH_SHORT).show();
+        if (isSubmissionCorrect(position)){
+            matrixDisplayedFlags[position] = true;
+            updateAdapterState(currentUrls, matrixDisplayedFlags);
+        }else {
+            Toast.makeText(mContext, "Wrong for : " + position , Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
@@ -183,7 +229,10 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
     @Override
     public void onCountDownFinished() {
         tvCountDown.setText("");
+        Arrays.fill(matrixDisplayedFlags, false);
+        updateAdapterState(currentUrls, matrixDisplayedFlags);
 
+        setQuestionImage(getAndUpdateQuestionIndex());
     }
 
     public interface OnFragmentInteractionListener {
