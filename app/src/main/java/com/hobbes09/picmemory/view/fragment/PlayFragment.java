@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,9 +59,10 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
     Context mContext;
     int currentPage = 1;
     int indexQuestionImage = 0;
+    int countCorrect = 0;
+    boolean isPlaying = false;
     List<String> currentUrls;
     Boolean[] matrixDisplayedFlags = new Boolean[NUM_COLS * NUM_COLS];
-    String currentCard;
 
     NotifyCountDownTimer mNotifyCountDownTimer;
 
@@ -142,11 +142,12 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
     // Called to make network call to get fresh image set
     @Override
     public void refreshPlay(){
-        Toast.makeText(mContext, "Refreshing ..", Toast.LENGTH_SHORT).show();
         if (tvHeader != null){
             tvHeader.setText("Round " + currentPage);
         }
         mFetchPicsPresenter.fetchPics(currentPage++);
+        isPlaying = false;
+        countCorrect = 0;
     }
 
     // Called to change recycler view content
@@ -155,7 +156,6 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
         currentUrls = urls;
         Arrays.fill(matrixDisplayedFlags, true);
         indexQuestionImage = 0;
-        Log.v(">>>>>>> initial load", currentUrls.toString());
         updateAdapterState(currentUrls, matrixDisplayedFlags);
 
         if (tvCountDown != null && mNotifyCountDownTimer != null){
@@ -223,13 +223,29 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
     @Override
     public void onTileItemClick(View view, int position) {
         // TODO : Check opaque logic here
-        if (ivQuestion.isOpaque() && isSubmissionCorrect(position)){
-            matrixDisplayedFlags[position] = true;
-            updateAdapterState(currentUrls, matrixDisplayedFlags);
-            setQuestionImage(getAndUpdateQuestionIndex());
-        }else {
-            Toast.makeText(mContext, "Wrong for : " + position , Toast.LENGTH_SHORT).show();
+        if (isPlaying){
+            if (isSubmissionCorrect(position)){
+                matrixDisplayedFlags[position] = true;
+                countCorrect++;
+                updateAdapterState(currentUrls, matrixDisplayedFlags);
+
+                // Set new image unless game is complete
+                if (isPlayOver()){
+                    isPlaying = false;
+                    Toast.makeText(mContext, "Great job !!", Toast.LENGTH_SHORT).show();
+                    refreshPlay();
+                }else {
+                    setQuestionImage(getAndUpdateQuestionIndex());
+                }
+
+            }else {
+                Toast.makeText(mContext, "Incorrect" , Toast.LENGTH_SHORT).show();
+            }
         }
+    }
+
+    private boolean isPlayOver() {
+        return countCorrect == NUM_COLS*NUM_COLS;
     }
 
     @Override
@@ -242,8 +258,8 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
         tvCountDown.setText("");
         Arrays.fill(matrixDisplayedFlags, false);
         updateAdapterState(currentUrls, matrixDisplayedFlags);
-        Log.v(">>>>>>> afterwards", currentUrls.toString());
         setQuestionImage(getAndUpdateQuestionIndex());
+        isPlaying = true;
     }
 
     public interface OnFragmentInteractionListener {
