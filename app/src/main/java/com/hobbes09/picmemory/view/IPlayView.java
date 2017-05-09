@@ -14,4 +14,12 @@ public interface IPlayView {
 
     public void onFetchFailed();
 
+    public void updateAdapterState(List<String> data, Boolean[] matrixDisplayedFlags);
+
+    public void setQuestionImage(int index);
+
+    public int getAndUpdateQuestionIndex();
+
+    public boolean isSubmissionCorrect(int index);
+
 }

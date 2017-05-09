@@ -1,11 +1,14 @@
 package com.hobbes09.picmemory.view.adapter;
 
+import android.animation.AnimatorInflater;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
 import com.hobbes09.picmemory.R;
@@ -23,13 +26,19 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     private List<String> mData;
     private LayoutInflater mInflater;
     private TileItemClickListener mClickListener;
+    Boolean[] matrixDisplayedFlags;
+
+    ObjectAnimator flipAnimation;
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, Fragment fragment, List<String> data) {
+    public MyRecyclerViewAdapter(Context context, Fragment fragment, List<String> data, Boolean[] matrixDisplayedFlags) {
         this.mInflater = LayoutInflater.from(context);
         this.mClickListener = (TileItemClickListener)fragment;
         this.mContext = context;
         this.mData = data;
+        this.matrixDisplayedFlags = matrixDisplayedFlags;
+
+        flipAnimation = (ObjectAnimator) AnimatorInflater.loadAnimator(mContext, R.animator.flipping);
     }
 
     @Override
@@ -43,9 +52,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         mData = data;
     }
 
+    public void setMatrixDisplayedFlags(Boolean[] matrixDisplayedFlags) {
+        this.matrixDisplayedFlags = matrixDisplayedFlags;
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        if (mContext != null){
+        if (mContext != null && matrixDisplayedFlags[position]){
             Picasso.with(mContext)
                     .load(mData.get(position))
                     .fit()
@@ -54,6 +67,11 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
                     .error(R.drawable.picasso_placeholder)
                     .into(holder.mImageView);
         }
+        flipAnimation.setTarget(holder.mImageView);
+        flipAnimation.setDuration(3000);
+        flipAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        flipAnimation.start();
+
     }
 
     @Override
