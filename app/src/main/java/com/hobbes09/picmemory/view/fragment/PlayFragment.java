@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.hobbes09.picmemory.PicMemoryApplication;
 import com.hobbes09.picmemory.R;
 import com.hobbes09.picmemory.presenter.FetchPicsPresenter;
-import com.hobbes09.picmemory.utils.GlobalConfig;
 import com.hobbes09.picmemory.utils.NotifyCountDownTimer;
 import com.hobbes09.picmemory.view.IPlayView;
 import com.hobbes09.picmemory.view.adapter.MyRecyclerViewAdapter;
@@ -27,8 +26,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.hobbes09.picmemory.utils.GlobalConfig.NUM_COLS;
 
 //import butterknife.BindView;
 //import butterknife.ButterKnife;
@@ -48,6 +45,8 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
 
     private FetchPicsPresenter mFetchPicsPresenter;
 
+    private static final int NUM_COLS = 3;
+
     TextView tvHeader;
     RecyclerView rvGrid;
     ImageView ivQuestion;
@@ -63,6 +62,7 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
     boolean isPlaying = false;
     List<String> currentUrls;
     Boolean[] matrixDisplayedFlags = new Boolean[NUM_COLS * NUM_COLS];
+    int numColumns;
 
     NotifyCountDownTimer mNotifyCountDownTimer;
 
@@ -130,7 +130,7 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
         tvCountDown = (TextView) view.findViewById(R.id.tvCountDown);
 
         rvGrid = (RecyclerView) view.findViewById(R.id.rvGrid);
-        rvGrid.setLayoutManager(new GridLayoutManager(mContext, GlobalConfig.NUM_COLS));
+        rvGrid.setLayoutManager(new GridLayoutManager(mContext, NUM_COLS));
         mMyRecyclerViewAdapter = new MyRecyclerViewAdapter(mContext, this, new ArrayList<String>(), matrixDisplayedFlags);
         rvGrid.setAdapter(mMyRecyclerViewAdapter);
 

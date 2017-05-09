@@ -22,7 +22,7 @@ public class PicMemoryApplication extends Application {
 
         mNetComponent = DaggerNetComponent.builder()
                 .appModule(new AppModule(this))
-                .netModule(new NetModule(GlobalConfig.BASE_API))
+                .netModule(new NetModule(GlobalConfig.getInstance().getConfigInterface().getBaseApi()))
                 .build();
     }
 
