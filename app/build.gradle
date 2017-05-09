@@ -18,6 +18,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+        prod {
+            applicationId 'com.hobbes09.picmemory'
+            buildConfigField 'String', 'APP_NAME', '"PicMemory Prod"'
+            buildConfigField 'String', 'ENVIRONMENT', '"PRODUCTION"'
+            resValue "string", "app_name", "PicMemory Prod"
+        }
+        beta {
+            applicationId 'com.hobbes09.picmemory.beta'
+            buildConfigField 'String', 'APP_NAME', '"PicMemory Beta"'
+            buildConfigField 'String', 'ENVIRONMENT', '"BETA"'
+            resValue "string", "app_name", "PicMemory Beta"
+        }
+    }
 }
 
 android {
@@ -50,6 +64,7 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.2.0'
     compile 'com.squareup.okio:okio:1.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.bumptech.glide:glide:3.7.0'  // For Disk/In-Memory cache
 
     testCompile 'junit:junit:4.12'
 }
