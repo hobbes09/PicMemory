@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hobbes09.picmemory.R;
 import com.squareup.picasso.Picasso;
 
@@ -37,8 +39,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         this.mContext = context;
         this.mData = data;
         this.matrixDisplayedFlags = matrixDisplayedFlags;
-
-        flipAnimation = (ObjectAnimator) AnimatorInflater.loadAnimator(mContext, R.animator.flipping);
     }
 
     @Override
@@ -59,18 +59,13 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (mContext != null && matrixDisplayedFlags[position]){
-            Picasso.with(mContext)
+            Glide.with(mContext)
                     .load(mData.get(position))
-                    .fit()
-                    .centerInside()
+                    .diskCacheStrategy(DiskCacheStrategy.RESULT)
                     .placeholder(R.drawable.picasso_placeholder)
                     .error(R.drawable.picasso_placeholder)
                     .into(holder.mImageView);
         }
-        flipAnimation.setTarget(holder.mImageView);
-        flipAnimation.setDuration(3000);
-        flipAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        flipAnimation.start();
 
     }
 
