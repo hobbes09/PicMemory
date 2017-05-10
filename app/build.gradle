@@ -11,6 +11,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -48,9 +50,6 @@ def daggerVersion = '2.9'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
 
     compile "com.android.support:appcompat-v7:$androidSupportVersion"
     compile "com.android.support:recyclerview-v7:$androidSupportVersion"
@@ -65,8 +64,19 @@ dependencies {
     compile 'com.squareup.okio:okio:1.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.bumptech.glide:glide:3.7.0'  // For Disk/In-Memory cache
+    compile 'com.android.support:multidex:1.0.0'
 
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    testCompile 'org.assertj:assertj-core:1.7.1'
+    betaCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
+    betaCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
+    betaCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    betaCompile 'com.android.support.test:testing-support-lib:0.1'
+    betaCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
+
 }
 
 apply plugin: 'me.tatarka.retrolambda' // make sure to apply last!

@@ -1,6 +1,7 @@
 package com.hobbes09.picmemory;
 
 import android.app.Application;
+import android.support.multidex.MultiDex;
 
 import com.hobbes09.picmemory.inject.component.DaggerNetComponent;
 import com.hobbes09.picmemory.inject.component.NetComponent;
@@ -19,6 +20,8 @@ public class PicMemoryApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        MultiDex.install(this);
 
         mNetComponent = DaggerNetComponent.builder()
                 .appModule(new AppModule(this))

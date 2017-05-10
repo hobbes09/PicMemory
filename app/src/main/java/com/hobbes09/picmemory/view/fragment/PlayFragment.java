@@ -179,7 +179,7 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
             rvGrid.setAdapter(mMyRecyclerViewAdapter);
 //            mMyRecyclerViewAdapter.setData(currentUrls);
 //            mMyRecyclerViewAdapter.setMatrixDisplayedFlags(matrixDisplayedFlags);
-//            mMyRecyclerViewAdapter.notifyDataSetChanged();
+//            mMyRecyclerViewAdapter.notifyDataSetChanged();    // causes unknown bug. Leaving it for time restriction.
         }
     }
 
