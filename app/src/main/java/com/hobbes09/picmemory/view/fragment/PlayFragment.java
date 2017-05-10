@@ -122,7 +122,7 @@ public class PlayFragment extends BaseFragment implements IPlayView, MyRecyclerV
 
         Arrays.fill(matrixDisplayedFlags, true);
 
-        mNotifyCountDownTimer = new NotifyCountDownTimer(5 * 1000, 1000, this);
+        mNotifyCountDownTimer = new NotifyCountDownTimer(16 * 1000, 1000, this);
 
         btnNew = (Button) view.findViewById(R.id.btnNew);
         tvHeader = (TextView) view.findViewById(R.id.tvHeader);

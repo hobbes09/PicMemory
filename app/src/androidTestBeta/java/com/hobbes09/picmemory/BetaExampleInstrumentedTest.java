@@ -85,7 +85,7 @@ public class BetaExampleInstrumentedTest extends InstrumentationTestCase {
     @Test
     public void testGameFlow() throws Exception {
         // TODO : Should be using Idling resource instead of this
-        Thread.sleep(5000);
+        Thread.sleep(25000);
 
         for (int i = 0; i < 9; i++){
             clickCell(i);

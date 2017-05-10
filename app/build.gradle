@@ -71,10 +71,10 @@ dependencies {
     testCompile 'org.assertj:assertj-core:1.7.1'
     betaCompile 'com.squareup.okhttp3:mockwebserver:3.6.0'
     betaCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
-    betaCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    compile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    betaCompile 'com.android.support.test:testing-support-lib:0.1'
+    compile 'com.android.support.test:testing-support-lib:0.1'
     betaCompile 'com.android.support.test.espresso:espresso-contrib:2.2.2'
 
 }

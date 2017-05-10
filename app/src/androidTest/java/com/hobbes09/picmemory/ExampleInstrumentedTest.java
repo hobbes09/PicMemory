@@ -1,5 +1,7 @@
 package com.hobbes09.picmemory;
 
+import static junit.framework.Assert.assertEquals;
+
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;

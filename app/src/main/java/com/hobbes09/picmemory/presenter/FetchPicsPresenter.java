@@ -25,13 +25,7 @@ public class FetchPicsPresenter implements IFetchPicsPresenter, IFetchFinishedPr
 
     @Override
     public void fetchPics(int page) {
-        // Perform validation and call api service
-        // TODO : Maybe we can inject a validator for this
-        if (page > 0 && page < 100){
-            this.mPicApiService.fetchPicsAsync(page);
-        } else {
-            onError();
-        }
+        this.mPicApiService.fetchPicsAsync(page%100); // Limiting pages only upto 100
     }
 
     @Override
